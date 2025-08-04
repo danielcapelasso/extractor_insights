@@ -23,9 +23,18 @@ idiomas_suportados = {
 
 # Textos da interface
 textos = {
-    "pt": {},
-    "es": {},
-    "en": {}
+    "pt": {
+        "title": "🧠 Extrator de Insights - Português",
+        "subtitle": "Faça upload dos arquivos e extraia insights do discovery técnico.",
+    },
+    "es": {
+        "title": "🧠 Extractor de Insights - Español",
+        "subtitle": "Sube los archivos y extrae insights del discovery técnico.",
+    },
+    "en": {
+        "title": "🧠 Insights Extractor - English",
+        "subtitle": "Upload the files and extract insights from the technical discovery.",
+    }
 }
 # (Aqui você mantém seu dicionário textos = { "pt": {...}, "es": {...}, "en": {...} } 
 #  exatamente como no seu app original — não alterei essa parte.)
