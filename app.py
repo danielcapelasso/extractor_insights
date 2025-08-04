@@ -330,6 +330,12 @@ async def extract_insights_api(
     if x_api_key != EXPECTED_API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+    idioma_normalizado = idiomas_suportados.get(idioma.strip())
+    if not idioma_normalizado:
+        raise HTTPException(status_code=400, detail="Idioma inválido. Use: Português, Español ou English.")
+    
+    idioma = idioma_normalizado  # usa o idioma padronizado daqui pra frente
+
     discovery_texto = ""
     if arquivo_discovery:
         discovery_texto = extrair_discovery_texto(await arquivo_discovery.read())
