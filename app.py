@@ -3,12 +3,10 @@ from openai import OpenAI
 import pandas as pd
 from io import BytesIO
 from fastapi import FastAPI, UploadFile, Form, HTTPException, Header
-import os
 
+# FastAPI
 app = FastAPI()
-
-# 🔐 Pega a chave secreta da variável de ambiente
-EXPECTED_API_KEY = os.getenv("API_KEY_SECRETA")
+EXPECTED_API_KEY = "minha-chave-secreta"
 
 # Configuração do Streamlit
 st.set_page_config(page_title="Extractor Yalo Multilíngue", layout="wide")
@@ -316,20 +314,6 @@ Now, merge this information into a single structured report, avoiding duplicatio
 st.markdown("---")
 st.markdown("🛠️ Desenvolvido por Solutions Team | Yalo · Powered by OpenAI · MVP interno")
 
-import unicodedata
-
-# Função para normalizar o idioma (remove acentos, caixa e espaços)
-def normalizar_idioma(texto):
-    texto = texto.strip().lower()
-    texto = unicodedata.normalize('NFKD', texto).encode('ASCII', 'ignore').decode('utf-8')
-    return texto
-
-# Dicionário com chaves sem acento
-idiomas_suportados = {
-    "portugues": "portuguese",
-    "espanol": "spanish",
-    "english": "english"
-}
 
 @app.post("/extract-insights")
 async def extract_insights_api(
@@ -344,12 +328,6 @@ async def extract_insights_api(
     if x_api_key != EXPECTED_API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    idioma_normalizado = idiomas_suportados.get(normalizar_idioma(idioma))
-    if not idioma_normalizado:
-        raise HTTPException(status_code=400, detail="Idioma inválido. Use: portugues, espanol ou english.")
-
-    idioma = idioma_normalizado
-
     discovery_texto = ""
     if arquivo_discovery:
         discovery_texto = extrair_discovery_texto(await arquivo_discovery.read())
@@ -360,33 +338,12 @@ async def extract_insights_api(
     if arquivo_transcricao:
         texto_transcricao = (await arquivo_transcricao.read()).decode()
 
-    insights = gerar_insights(discovery_texto, texto_transcricao, observacoes, nome_cliente, idioma)
+    idi_key = idiomas_suportados.get(idioma)
+    if idi_key not in ["portuguese", "spanish", "english"]:
+        raise HTTPException(status_code=400, detail="Idioma inválido.")
+
+    # reutiliza a mesma função de geração
+    insights = gerar_insights(discovery_texto, texto_transcricao, observacoes, nome_cliente, idi_key)
     return {"insights": insights}
 
-def gerar_insights(discovery, transcricao, observacoes, cliente, idioma):
-    prompt = f"""
-    🛑 IMPORTANTE: Responda apenas em **{idioma}**. Não use outros idiomas.
-
-    Projeto com o cliente: **{cliente}**
-
-    📂 Discovery:
-    \"\"\"{discovery}\"\"\"
-
-    💬 Transcrição:
-    \"\"\"{transcricao}\"\"\"
-
-    📌 Observações:
-    \"\"\"{observacoes}\"\"\"
-
-    Agora, una essas informações em um relatório estruturado, claro e conciso.
-    """
-
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    r = client.chat.completions.create(
-        model="gpt-4-1106-preview",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.3,
-        max_tokens=3000,
-    )
-    return r.choices[0].message.content
 
