@@ -295,7 +295,8 @@ Now, merge this information into a single structured report, avoiding duplicatio
     - 🔥 Transcribe exactly as in the sources; if missing, “Information not provided in the sources.”"""
 
             # Chamada à OpenAI
-            client = OpenAI(api_key=client.api_key)
+            import os
+            client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
             r = client.chat.completions.create(
                 model="gpt-4-1106-preview",
                 messages=[{"role":"user","content":bloco}],
