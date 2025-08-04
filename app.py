@@ -26,18 +26,58 @@ textos = {
     "pt": {
         "title": "🧠 Extrator de Insights - Português",
         "subtitle": "Faça upload dos arquivos e extraia insights do discovery técnico.",
+        "idioma_analise": "📘 Idioma de geração do relatório",
+        "client_name": "🧾 Nome do cliente",
+        "upload_excel": "📤 Envie o arquivo Excel (.xlsx) do discovery técnico",
+        "upload_txt": "📤 Envie arquivo .txt com transcrição (opcional)",
+        "paste_transcript": "📋 Ou cole aqui a transcrição da call (opcional)",
+        "consultant_notes": "📝 Observações do consultor (opcional)",
+        "extract_button": "🚀 Extrair Insights",
+        "fill_client": "Por favor, preencha o nome do cliente.",
+        "provide_inputs": "Você deve fornecer ao menos um discovery ou transcrição.",
+        "analyzing": "🔍 Analisando discovery...",
+        "analyzing_call": "🎧 Processando transcrição...",
+        "consolidating": "🧠 Consolidando insights...",
+        "success": "✅ Insights extraídos com sucesso!",
+        "download": "📥 Baixar Insights (.txt)"
     },
     "es": {
         "title": "🧠 Extractor de Insights - Español",
         "subtitle": "Sube los archivos y extrae insights del discovery técnico.",
+        "idioma_analise": "📘 Idioma para generar el informe",
+        "client_name": "🧾 Nombre del cliente",
+        "upload_excel": "📤 Sube el archivo Excel (.xlsx) del discovery técnico",
+        "upload_txt": "📤 Sube archivo .txt con transcripción (opcional)",
+        "paste_transcript": "📋 O pega aquí la transcripción de la llamada (opcional)",
+        "consultant_notes": "📝 Observaciones del consultor (opcional)",
+        "extract_button": "🚀 Extraer Insights",
+        "fill_client": "Por favor, introduce el nombre del cliente.",
+        "provide_inputs": "Debes proporcionar al menos un discovery o transcripción.",
+        "analyzing": "🔍 Analizando discovery...",
+        "analyzing_call": "🎧 Procesando transcripción...",
+        "consolidating": "🧠 Consolidando insights...",
+        "success": "✅ ¡Insights extraídos con éxito!",
+        "download": "📥 Descargar Insights (.txt)"
     },
     "en": {
         "title": "🧠 Insights Extractor - English",
         "subtitle": "Upload the files and extract insights from the technical discovery.",
+        "idioma_analise": "📘 Report generation language",
+        "client_name": "🧾 Client name",
+        "upload_excel": "📤 Upload Excel (.xlsx) file from discovery",
+        "upload_txt": "📤 Upload .txt transcript (optional)",
+        "paste_transcript": "📋 Or paste the call transcript here (optional)",
+        "consultant_notes": "📝 Consultant's notes (optional)",
+        "extract_button": "🚀 Extract Insights",
+        "fill_client": "Please enter the client name.",
+        "provide_inputs": "You must provide at least a discovery or transcript.",
+        "analyzing": "🔍 Analyzing discovery...",
+        "analyzing_call": "🎧 Processing transcript...",
+        "consolidating": "🧠 Consolidating insights...",
+        "success": "✅ Insights successfully extracted!",
+        "download": "📥 Download Insights (.txt)"
     }
 }
-# (Aqui você mantém seu dicionário textos = { "pt": {...}, "es": {...}, "en": {...} } 
-#  exatamente como no seu app original — não alterei essa parte.)
 
 idioma_interface = st.selectbox("🌐 Please select Language", list(idiomas_suportados.keys()))
 idioma_key = idiomas_suportados[idioma_interface]  # ex: "portuguese"
