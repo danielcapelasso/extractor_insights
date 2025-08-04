@@ -3,8 +3,12 @@ from openai import OpenAI
 import pandas as pd
 from io import BytesIO
 from fastapi import FastAPI, UploadFile, Form, HTTPException, Header
+import os
 
 app = FastAPI()
+
+# 🔐 Pega a chave secreta da variável de ambiente
+EXPECTED_API_KEY = os.getenv("API_KEY_SECRETA")
 
 # Configuração do Streamlit
 st.set_page_config(page_title="Extractor Yalo Multilíngue", layout="wide")
