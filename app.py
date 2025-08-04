@@ -12,7 +12,7 @@ EXPECTED_API_KEY = "minha-chave-secreta"
 st.set_page_config(page_title="Extractor Yalo Multilíngue", layout="wide")
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image("yalo-logo (1).jpg", width=160)
+    st.image("yalo_logo.jpg", width=120)
 
 # Mapear nomes de idioma da interface para chaves internas
 idiomas_suportados = {
