@@ -4,10 +4,6 @@ import pandas as pd
 from io import BytesIO
 from fastapi import FastAPI, UploadFile, Form, HTTPException, Header
 
-# FastAPI
-app = FastAPI()
-EXPECTED_API_KEY = "minha-chave-secreta"
-
 # Configuração do Streamlit
 st.set_page_config(page_title="Extractor Yalo Multilíngue", layout="wide")
 col1, col2, col3 = st.columns([1, 2, 1])
