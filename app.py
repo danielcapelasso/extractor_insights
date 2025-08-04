@@ -316,6 +316,20 @@ Now, merge this information into a single structured report, avoiding duplicatio
 st.markdown("---")
 st.markdown("🛠️ Desenvolvido por Solutions Team | Yalo · Powered by OpenAI · MVP interno")
 
+import unicodedata
+
+# Função para normalizar o idioma (remove acentos, caixa e espaços)
+def normalizar_idioma(texto):
+    texto = texto.strip().lower()
+    texto = unicodedata.normalize('NFKD', texto).encode('ASCII', 'ignore').decode('utf-8')
+    return texto
+
+# Dicionário com chaves sem acento
+idiomas_suportados = {
+    "portugues": "portuguese",
+    "espanol": "spanish",
+    "english": "english"
+}
 
 @app.post("/extract-insights")
 async def extract_insights_api(
@@ -330,11 +344,11 @@ async def extract_insights_api(
     if x_api_key != EXPECTED_API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    idioma_normalizado = idiomas_suportados.get(idioma.strip())
+    idioma_normalizado = idiomas_suportados.get(normalizar_idioma(idioma))
     if not idioma_normalizado:
-        raise HTTPException(status_code=400, detail="Idioma inválido. Use: Português, Español ou English.")
-    
-    idioma = idioma_normalizado  # usa o idioma padronizado daqui pra frente
+        raise HTTPException(status_code=400, detail="Idioma inválido. Use: portugues, espanol ou english.")
+
+    idioma = idioma_normalizado
 
     discovery_texto = ""
     if arquivo_discovery:
@@ -346,10 +360,5 @@ async def extract_insights_api(
     if arquivo_transcricao:
         texto_transcricao = (await arquivo_transcricao.read()).decode()
 
-    idi_key = idiomas_suportados.get(idioma)
-    if idi_key not in ["portuguese", "spanish", "english"]:
-        raise HTTPException(status_code=400, detail="Idioma inválido.")
-
-    # reutiliza a mesma função de geração
-    insights = gerar_insights(discovery_texto, texto_transcricao, observacoes, nome_cliente, idi_key)
+    insights = gerar_insights(discovery_texto, texto_transcricao, observacoes, nome_cliente, idioma)
     return {"insights": insights}
