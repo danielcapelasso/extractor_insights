@@ -362,3 +362,31 @@ async def extract_insights_api(
 
     insights = gerar_insights(discovery_texto, texto_transcricao, observacoes, nome_cliente, idioma)
     return {"insights": insights}
+
+def gerar_insights(discovery, transcricao, observacoes, cliente, idioma):
+    prompt = f"""
+    🛑 IMPORTANTE: Responda apenas em **{idioma}**. Não use outros idiomas.
+
+    Projeto com o cliente: **{cliente}**
+
+    📂 Discovery:
+    \"\"\"{discovery}\"\"\"
+
+    💬 Transcrição:
+    \"\"\"{transcricao}\"\"\"
+
+    📌 Observações:
+    \"\"\"{observacoes}\"\"\"
+
+    Agora, una essas informações em um relatório estruturado, claro e conciso.
+    """
+
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    r = client.chat.completions.create(
+        model="gpt-4-1106-preview",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,
+        max_tokens=3000,
+    )
+    return r.choices[0].message.content
+
